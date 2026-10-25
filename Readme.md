@@ -86,3 +86,52 @@ multiple column dekhte chaile
 SELECT name,bio FROM person;
 
 **updating data**
+UPDATE person
+SET name ='Hasan Ali'
+WHERE id = 1
+
+**delete data**
+DELETE FROM person
+WHERE id=12
+
+search on browser: datatypes in postgresql
+Data Type নির্ধারণ করে একটি column-এ কী ধরনের data রাখা যাবে।
+
+Data Type	            কী ধরনের data রাখে                                  	Example
+
+INT     	            পূর্ণসংখ্যা	                                                     25
+VARCHAR(100)        	নির্দিষ্ট সীমার text	                                      'Hasan'
+TEXT	                Text,            নির্দিষ্ট ছোট দৈর্ঘ্যের সীমা নেই	'Frontend Developer'
+BOOLEAN	                True/False	                                                TRUE
+DATE	                তারিখ	                                             '2026-10-26'
+TIMESTAMP	            তারিখ ও সময়	                               '2026-10-26 10:30:00'
+NUMERIC(10,2)	        নির্ভুল দশমিক সংখ্যা	                                    15000.50
+UUID	                Unique identifier          '550e8400-e29b-41d4-a716-446655440000'
+JSONB	                JSON data               	                '{"role":"developer"}'
+
+Constraint হলো table-এর data-এর ওপর নির্দিষ্ট নিয়ম বা শর্ত, যা data সঠিক ও consistent রাখতে সাহায্য করে।
+
+১. PRIMARY KEY
+প্রতিটি row-কে uniquely identify করে। এর value duplicate বা NULL হতে পারে না।
+id INT PRIMARY KEY
+
+২. NOT NULL
+Column-এ NULL value রাখা যাবে না।
+name VARCHAR(100) NOT NULL
+
+৩. UNIQUE
+একই column-এ duplicate value রাখা যাবে না।
+email VARCHAR(255) UNIQUE
+
+৪. CHECK
+নির্দিষ্ট condition পূরণ করতে হবে।
+age INT CHECK (age >= 18)
+
+৫. DEFAULT
+Value না দিলে default value ব্যবহার করে।
+is_active BOOLEAN DEFAULT TRUE
+
+৬. FOREIGN KEY
+অন্য table-এর সঙ্গে relationship তৈরি করে এবং reference-এর consistency বজায় রাখে।
+department_id INT REFERENCES departments(id)
+
