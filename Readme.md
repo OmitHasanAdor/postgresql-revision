@@ -464,4 +464,64 @@ group by dept
 select dept, avg(salary)
 from employees
 group by dept
+
 ---
+
+**Altering Table**
+PostgreSQL-এ Altering Table মানে হলো আগে থেকে তৈরি করা table-এর structure পরিবর্তন করা। এর জন্য আমরা ALTER TABLE command ব্যবহার করি।
+
+**নতুন Column যোগ করা — ADD COLUMN**
+alter table users
+add column age int;
+
+<!-- null value na chaile -->
+alter table users 
+add column acctype varchar(50) default 'personal'
+
+**Column মুছে ফেলা — DROP COLUMN**
+alter table users 
+drop column acctype
+
+**Column-এর নাম পরিবর্তন — RENAME COLUMN**
+
+
+**Column-এর Data Type পরিবর্তন — ALTER COLUMN TYPE**
+alter table users
+rename column acctype to accdetails;
+
+**Table-এর নাম পরিবর্তন — RENAME TO**
+alter table person
+rename to person_data;
+
+**Data type set kora**
+alter table users
+alter column username 
+set data type varchar(50)
+
+**Default Value যোগ বা delete করা**
+alter table users
+alter column age
+set default 0;
+
+<!-- delete -->
+alter table users
+alter column age
+drop default
+
+
+**NOT NULL যোগ করা**
+ALTER TABLE employees
+ALTER COLUMN dept SET NOT NULL;
+<!-- সতর্কতা: আগে থেকেই কোনো row-তে dept-এর value NULL থাকলে এই command ব্যর্থ হবে। প্রথমে সেগুলো ঠিক করতে হবে। -->
+UPDATE employees
+SET dept = 'Unassigned'
+WHERE dept IS NULL;
+
+
+**NOT NULL সরিয়ে দেওয়া**
+alter table users
+alter column username
+drop not null
+
+**নতুন Constraint যোগ করা**
+**Constraint মুছে ফেলা**
