@@ -173,3 +173,76 @@ SERIAL-এর ID sequence reset হবে, তাই পরের insert সা�
  -->
 
  <!-- ask ai what is data refine in psql -->
+
+** Where clause**
+select * from employees
+where emp_id=8
+
+select * from employees
+where dept='HR'
+
+<!-- conditional -->
+select * from employees
+where salary>=40000
+
+<!-- with or operator -->
+select * from employees
+where dept='HR' or dept='Finance'
+
+<!-- with and operator -->
+select * from employees
+where dept='Engineering' and salary>=50000
+
+<!-- with not equal operator -->
+select * from employees
+where dept='Engineering' and salary!=45000
+
+<!-- with in operator -->
+select * from employees
+where dept in('Engineering','HR','Finance')
+
+<!-- with not in operator -->
+select * from employees
+where dept not in('Finance','Engineering')
+
+<!-- with between operator -->
+select * from employees
+where salary between 35000 and 52000
+
+**Distinct clause**
+PostgreSQL-এ DISTINCT-এর কাজ হলো duplicate value বাদ দিয়ে শুধু unique value দেখানো।
+select distinct dept from employees;
+
+**order by**
+<!-- Ascending -->
+select * from employees
+order by fname
+
+<!-- descending -->
+select * from employees
+order by fname desc
+
+select * from employees
+order by emp_id desc
+
+
+প্রথমে dept A থেকে Z ক্রমে সাজবে।
+একই department-এর মধ্যে salary বেশি থেকে কম হবে।
+SELECT fname, dept, salary
+FROM employees
+ORDER BY dept ASC, salary DESC;
+
+**limit**
+select * from employees limit 5
+
+**like**
+<!-- ager letter match korte -->
+select * from employees
+where fname like 'R%'
+<!-- last er letter match korte egulo case sensitive-->
+SELECT * FROM employees
+where fname like '%m'
+
+<!-- middle letter match korte -->
+SELECT * FROM employees
+where fname like '%h%'
