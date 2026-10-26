@@ -111,6 +111,8 @@ JSONB	                JSON data               	                '{"role":"develop
 
 Constraint হলো table-এর data-এর ওপর নির্দিষ্ট নিয়ম বা শর্ত, যা data সঠিক ও consistent রাখতে সাহায্য করে।
 
+---
+
 ১. PRIMARY KEY
 প্রতিটি row-কে uniquely identify করে। এর value duplicate বা NULL হতে পারে না।
 id INT PRIMARY KEY
@@ -174,6 +176,9 @@ SERIAL-এর ID sequence reset হবে, তাই পরের insert সা�
 
  <!-- ask ai what is data refine in psql -->
 
+---
+
+****clause****
 ** Where clause**
 select * from employees
 where emp_id=8
@@ -255,6 +260,8 @@ where dept like '__'
 SELECT * FROM employees
 where fname like '_a%'
 
+---
+
 ****aggregate function****
 
 **count**
@@ -299,6 +306,102 @@ select dept, min(salary)
 from employees
 group by dept
 
+**WHERE আর GROUP BY একসঙ্গে**
+<!-- as diye ekta temporaly name dewa jay -->
+SELECT dept, COUNT(*) AS total_employees
+FROM employees
+WHERE salary >= 40000
+GROUP BY dept;
+
+**HAVING**
+WHERE individual row filter করে, আর HAVING group তৈরি হওয়ার পর group filter করে।
+SELECT dept, COUNT(*) AS total_employees
+FROM employees
+GROUP BY dept
+HAVING COUNT(*) > 2;
+
 ---
 
 ****string functions****
+
+*PostgreSQL-এর String Functions হলো এমন কিছু built-in function, যেগুলো দিয়ে text বা string-এর ওপর বিভিন্ন কাজ করা যায়। যেমন: বড় হাতের অক্ষর ছোট করা, text-এর দৈর্ঘ্য বের করা, দুটি string জোড়া লাগানো, text-এর অংশ বের করা ইত্যাদি।*
+---
+
+**concat**
+select concat(fname, dept) from employees
+<!-- space dite  -->
+select concat(fname,' ', dept) from employees
+
+<!-- better approach -->
+**concat_ws** 
+<!-- means concat with separater -->
+select concat_ws(' ',fname, dept, salary, email)  as nameAndDept
+from employees
+
+<!-- concat er shathe onno column gulow ante -->
+select emp_id, concat(fname, dept) empDetails , salary
+from employees
+
+**substring**
+string-এর অংশ বের করা
+<!-- এখানে position 1 থেকে 6টি character নেওয়া হয়েছে। -->
+select substring('i love to code', 1,6)
+<!-- majhkhan theke nile -->
+select substring('i love to code', 11,14)
+
+**REPLACE**
+text-এর অংশ পরিবর্তন
+<!--
+ 1)mull string
+2)jeta replace korbo
+3) jeta diye replace korbo
+ -->
+select replace('hey world','hey','Hello')
+<!-- table er data nile -->
+select replace(dept , 'Engineering', 'Tech') from employees;
+
+**reverse**
+select reverse('hello')
+<!-- table er data nile -->
+select reverse(dept) from employees
+
+**length**
+select length('Hasan')
+<!-- table er data nile -->
+select length(dept) from employees
+<!-- shathe onno kono column nile  -->
+select length(dept),fname from employees
+
+<!-- condition use kore -->
+select * from employees
+where length(fname) > 5
+
+**upper**
+select upper(fname) from employees
+
+**lower**
+select lower(fname) from employees
+
+**left**
+বাম দিক থেকে koyekta character নেওয়া
+select left('postgresql', 4)
+<!-- table er data nile -->
+select left(fname, 4) from employees
+
+**right**
+ ডান দিক থেকে koyekta character নেওয়া
+ select right('postgresql', 4)
+ <!-- table er data nile -->
+ select right(dept, 4) from employees
+
+**trim**
+<!-- etar length dibe onk beshi space er karone. etake trim korte hobe. trim normally password db te insert korar time a use hoy -->
+select length('     alright     ')
+
+<!-- using trim ekhane length 7 dibe-->
+select length(trim('     alright     '))
+
+**positon**
+<!-- text er porition ber kora -->
+select position('om' in 'thomas')
+
