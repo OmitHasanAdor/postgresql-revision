@@ -135,3 +135,41 @@ is_active BOOLEAN DEFAULT TRUE
 অন্য table-এর সঙ্গে relationship তৈরি করে এবং reference-এর consistency বজায় রাখে।
 department_id INT REFERENCES departments(id)
 
+making a real world table
+create table employees(
+emp_id serial primary key,
+fname varchar(100) not null,
+email varchar(100) unique not null,
+dept varchar(50),
+salary decimal(10,2) not null default 30000.00,
+hire_date date not null default current_date
+)
+
+**delete table data**
+যেহেতু আগে থেকেই ১২টা employee আছে, প্রথমে এই query চালাও:
+<!-- employees_emp_id_seq  eta pabo holo \d <table_name> theke -->
+SELECT setval('employees_emp_id_seq', 12);
+
+তবে আরও নিরাপদ পদ্ধতি হলো table-এর সর্বোচ্চ emp_id অনুযায়ী sequence ঠিক করা:
+SELECT setval(
+    'employees_emp_id_seq',
+    (SELECT MAX(emp_id) FROM employees)
+);
+
+সব data delete করবে, কিন্তু table থাকবে
+DELETE FROM employees;
+<!-- 
+সব row delete হবে।
+Table-এর structure, column, constraint থাকবে।
+SERIAL sequence সাধারণত reset হবে না।
+ -->
+
+ সব data দ্রুত delete করবে এবং ID sequence reset করবে
+ TRUNCATE TABLE employees RESTART IDENTITY;
+ <!-- 
+ সব row delete হবে।
+Table-এর structure থাকবে।
+SERIAL-এর ID sequence reset হবে, তাই পরের insert সাধারণত emp_id = 1 থেকে শুরু হবে।
+ -->
+
+ <!-- ask ai what is data refine in psql -->
