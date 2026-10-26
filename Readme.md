@@ -405,3 +405,63 @@ select length(trim('     alright     '))
 <!-- text er porition ber kora -->
 select position('om' in 'thomas')
 
+---
+***task***
+concat_ws er bhitor concat_ws eta banate
+ <!-- hasan@example.com Hasan:Engineering:45000.00 -->
+select concat_ws(' ',email ,concat_ws(':', fname, dept, salary)) as empDetails from employees
+
+<!-- 5:Tanvir:FINANCE -->
+select concat_ws(':',emp_id,fname,upper(dept))
+from employees
+where emp_id=5
+<!-- M6 Sadia banate hobe -->
+select concat(left(dept,1),emp_id,' ',fname)
+from employees
+where emp_id=6
+
+<!-- high to low salary -->
+select * from employees
+order by salary desc
+
+<!-- top 3 salary -->
+select * from employees
+order by salary desc
+limit 3
+
+<!-- first name A -->
+select * from employees
+where fname like'A%'
+
+<!-- 5 char fname find -->
+select * from employees
+where length(fname)=5 
+
+<!-- total employees count -->
+select count(emp_id)
+from employees
+
+<!-- no. of emp each dept -->
+select dept,count(emp_id)
+from employees
+group by dept
+
+<!--subquery: query er bhitore query use kore lowest salary pawa employee find kora -->
+SELECT * FROM employees 
+WHERE salary = (SELECT MIN(salary) FROM employees);
+
+<!-- highest salary pawa employee find kora -->
+SELECT * FROM employees 
+where salary=(select max(salary) from employees)
+
+<!-- total salary of specific dept -->
+SELECT dept, sum(salary)
+from employees
+where dept='Engineering'
+group by dept
+
+<!-- avg salary of each dept -->
+select dept, avg(salary)
+from employees
+group by dept
+---
