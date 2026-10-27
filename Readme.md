@@ -523,5 +523,41 @@ alter table users
 alter column username
 drop not null
 
-**নতুন Constraint যোগ করা**
+
+**check constraints**
+<!-- check er por amra condition use korte pari -->
+alter table users
+add column mob varchar(15)
+check (length(mob)>=10);
+
 **Constraint মুছে ফেলা**
+alter table users
+drop constraint users_username_key;
+
+
+*constraint make with custom name*
+alter table person_data
+add constraint more_than_10 check(length(mob)between 10 and 15)
+
+<!-- table create korar somoy constraint make with custom name -->
+create table person(
+name varchar(100),
+email varchar(100) unique,
+mob varchar(15) unique,
+constraint mob_no_less_than_10 check (length(mob) between 10 and 15)
+)
+
+<!--
+eta diye check korte pari
+ insert into person(mob)
+values(123333333333); 
+ -->
+
+*name VARCHAR(100) — সর্বোচ্চ ১০০ অক্ষরের নাম।
+email VARCHAR(100) UNIQUE — একই email একাধিক row-তে রাখা যাবে না।
+mob VARCHAR(15) UNIQUE — একই mobile number একাধিক row-তে রাখা যাবে না।
+CONSTRAINT mob_no_less_than_10 — তোমার CHECK constraint-এর নাম।
+CHECK (LENGTH(mob) BETWEEN 10 AND 15) — mobile number-এর দৈর্ঘ্য ১০ থেকে ১৫ অক্ষরের মধ্যে হতে হবে।*
+
+
+---
