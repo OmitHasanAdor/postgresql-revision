@@ -561,3 +561,23 @@ CHECK (LENGTH(mob) BETWEEN 10 AND 15) — mobile number-এর দৈর্ঘ�
 
 
 ---
+**case**
+
+SQL-এর CASE হলো conditional expression। এটি অনেকটা programming-এর if-else statement-এর মতো কাজ করে।
+
+<!-- syntex -->
+select fname, salary,
+case
+when salary>=45000 then 'High'
+else 'Low'
+end as sal_cat
+from employees
+
+<!-- multiple condition -->
+select fname, salary,
+case
+when salary >=50000 then 'high'
+when salary >= 40000 and salary<50000 then 'mid'
+else 'low'
+end as sal_cat
+from employees;
