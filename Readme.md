@@ -595,3 +595,17 @@ from employees;
 SELECT fname, salary,
     ROUND(salary * 0.10) AS bonus
 FROM employees;
+
+<!-- using case with group by -->
+
+select
+case
+when salary >=50000 then 'high'
+when salary >= 40000 and salary<50000 then 'mid'
+else 'low'
+end as sal_cat,
+<!--ekhane  as emp_count dilew hobe na dilew hobe  -->
+count(*) as emp_count
+<!-- count(*) er jaygay count(emp_id) o dewa jabe -->
+from employees
+group by sal_cat;
