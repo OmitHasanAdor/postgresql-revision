@@ -581,3 +581,17 @@ when salary >= 40000 and salary<50000 then 'mid'
 else 'low'
 end as sal_cat
 from employees;
+
+<!-- case use kore 10% bonus  ber kora-->
+
+select fname, salary,
+case
+when salary >0 then (round(salary*.10))
+end as bonus
+from employees;
+
+<!-- যদি তোমার উদ্দেশ্য শুধু salary-এর ১০% হিসাব করা হয়, কোনো condition ছাড়াই, তাহলে CASE দরকার নেই: -->
+
+SELECT fname, salary,
+    ROUND(salary * 0.10) AS bonus
+FROM employees;
