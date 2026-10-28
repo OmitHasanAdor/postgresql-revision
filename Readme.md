@@ -609,3 +609,41 @@ count(*) as emp_count
 <!-- count(*) er jaygay count(emp_id) o dewa jabe -->
 from employees
 group by sal_cat;
+
+---
+
+**Relationship**
+
+Relationship-এর ৩টি প্রধান ধরন
+1. One-to-One (1:1)
+একটি table-এর একটি row অন্য table-এর সর্বোচ্চ একটি row-এর সঙ্গে সম্পর্কিত।
+উদাহরণ: একজন ব্যক্তির একটি passport।
+
+2. One-to-Many (1:N)
+একটি table-এর একটি row অন্য table-এর অনেক row-এর সঙ্গে সম্পর্কিত হতে পারে।
+উদাহরণ: একটি department-এ অনেক employee থাকতে পারে।
+
+3. Many-to-Many (M:N)
+একটি table-এর অনেক row অন্য table-এর অনেক row-এর সঙ্গে সম্পর্কিত হতে পারে।
+উদাহরণ: একজন student অনেক course করতে পারে, আবার একটি course-এ অনেক student থাকতে পারে।
+
+**Foreign Key**
+Foreign Key হলো এমন একটি column, যা অন্য table-এর PRIMARY KEY বা UNIQUE column-কে reference করে দুইটি table-এর মধ্যে relationship তৈরি করে।
+
+<!-- customer er table -->
+
+create table customers(
+cust_id serial primary key,
+cust_name varchar(100) not null
+)
+
+<!-- orders er table foreign key use kore -->
+
+create table orders(
+order_id serial primary key,
+order_date date  not null DEFAULT current_date,
+price numeric not null,
+cust_id int not null,
+foreign key(cust_id) references
+customers(cust_id)
+)
