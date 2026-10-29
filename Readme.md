@@ -647,3 +647,60 @@ cust_id int not null,
 foreign key(cust_id) references
 customers(cust_id)
 )
+
+**Joins**
+1. INNER JOIN
+দুই table-এ যেসব row-এর matching data আছে, শুধু সেগুলো দেখাবে।
+
+select * from customers c
+inner join orders o
+on c.cust_id=o.cust_id;
+<!-- alias use na kore korle -->
+select * from customers
+inner join orders
+on customers.cust_id=orders.cust_id;
+
+<!-- inner join with group by -->
+<!-- order count ber kora -->
+select customers.cust_name,count(orders.order_id) from customers
+inner join orders
+on customers.cust_id=orders.cust_id
+group by cust_name;
+
+<!-- order amount ber kora -->
+select customers.cust_name, sum(orders.price) from customers
+inner join orders
+on customers.cust_id=orders.cust_id
+group by cust_name;
+
+<!-- alias use kore korle -->
+select c.cust_name, sum(o.price) from customers c
+inner join orders o
+on c.cust_id=o.cust_id
+group by cust_name;
+
+2. LEFT JOIN
+customers table-এর সব customer দেখাবে। Order থাকলে order-এর data দেখাবে, না থাকলে order-এর column-গুলোতে NULL দেখাবে।left er shob data dekhabe right er data na thakle null dekhabe .
+select * from customers
+left join orders
+on customers.cust_id=orders.cust_id;
+
+3. RIGHT JOIN
+orders table-এর সব matching row-সহ সব order দেখাবে। Matching customer না থাকলে customer-এর column-গুলোতে NULL আসবে।
+select * from orders 
+right join customers
+on customers.cust_id = orders.cust_id;
+
+4. FULL OUTER JOIN
+দুই table-এর সব row দেখাবে—matching থাকুক বা না থাকুক। Matching না থাকলে অপর table-এর column-গুলোতে NULL থাকবে।
+SELECT
+    c.cust_name,
+    o.order_id,
+    o.price
+FROM customers AS c
+FULL OUTER JOIN orders AS o
+ON c.cust_id = o.cust_id;
+
+ 5. CROSS JOIN
+ একটি table-এর প্রতিটি row-এর সঙ্গে অন্য table-এর প্রতিটি row combine করবে।
+ select * from customers cross join orders;
