@@ -704,3 +704,64 @@ ON c.cust_id = o.cust_id;
  5. CROSS JOIN
  একটি table-এর প্রতিটি row-এর সঙ্গে অন্য table-এর প্রতিটি row combine করবে।
  select * from customers cross join orders;
+
+
+**Many to Many**
+<!-- 3ta table create -->
+create table students(
+s_id serial primary key,
+name varchar(100) not null
+)
+
+create table courses(
+c_id serial primary key,
+name varchar(100) not null,
+fee numeric not null
+)
+
+create table enrollment(
+enrollment_id serial primary key,
+s_id int not null,
+c_id int not null,
+enrollment_date date not null default current_date,
+foreign key(s_id) references students(s_id),
+foreign key(c_id) references courses(c_id)
+)
+
+*3 ta table ke ekshathe dekhte*
+<!-- join mane default vabe inner join e bujhay -->
+select s.name, c.name, c.fee, e.enrollment_date
+from enrollment e
+join students s on s.s_id=e.s_id
+join courses c on c.c_id=e.c_id
+
+<!-- 2ta inner join ekashthe use kore -->
+SELECT
+    s.name AS student_name,
+    c.name AS course_name,
+    c.fee,
+    e.enrollment_date
+FROM enrollment AS e
+INNER JOIN students AS s
+ON e.s_id = s.s_id
+INNER JOIN courses AS c
+ON e.c_id = c.c_id;
+
+<!-- group by use korle -->
+<!-- JOIN + GROUP BY + COUNT + SUM -->
+select s.name,count(e.c_id),sum(c.fee)
+from enrollment e
+join students s on s.s_id=e.s_id
+join courses c on c.c_id=e.c_id
+
+group by s.name,s.s_id;
+
+<!-- alias use kore group by use korle(ete output shundor hoy) -->
+SELECT
+    s.name AS student_name,
+    COUNT(e.c_id) AS total_courses,
+    SUM(c.fee) AS total_fee
+FROM enrollment e
+JOIN students s ON s.s_id = e.s_id
+JOIN courses c ON c.c_id = e.c_id
+GROUP BY s.s_id, s.name;
