@@ -655,6 +655,8 @@ foreign key(cust_id) references
 customers(cust_id)
 )
 
+---
+
 **Joins**
 1. INNER JOIN
 দুই table-এ যেসব row-এর matching data আছে, শুধু সেগুলো দেখাবে।
@@ -826,3 +828,107 @@ join orders o
 on o.ord_id=oi.ord_id
 join customers c
 on c.cust_id=o.cust_id;
+
+---
+
+**View**
+তুমি যদি বারবার একই JOIN query লেখো, তাহলে সেই query-টি একটি VIEW হিসেবে save করে রাখতে পারো।
+*পরবর্তীতে পুরো JOIN query না লিখে শুধু VIEW-এর নাম ব্যবহার করেই data দেখতে পারবে।*
+
+* View create kora
+
+create view order_details as
+select c.cust_name,
+o.ord_date,
+p.p_name,
+p.price,
+oi.quantity,
+(p.price * oi.quantity)
+from ord_items oi
+join products p
+on p.p_id=oi.p_id
+join orders o
+on o.ord_id=oi.ord_id
+join customers c
+on c.cust_id=o.cust_id;
+
+* VIEW থেকে Data দেখবে কীভাবে?
+SELECT * FROM order_details;
+
+* cli a \dt dile table dekha jabe na karon eta temporaly view table eta dekhte dite hobe
+\dv 
+
+---
+
+**Having clause group rollup**
+group by er shathe shob having clause use korte hoy. ekhane where dile error dibe
+
+select p_name,sum(price * quantity) from order_details
+group by p_name
+having sum(price * quantity)>10000;
+
+**group by rollup**
+ROLLUP দিয়ে প্রতিটি category-এর total এবং সব category মিলিয়ে Grand Total বের করতে পারবে।
+
+select p_name,sum(price * quantity) from order_details
+group by rollup(p_name)
+
+<!-- choto theke boro order a shajano holo jeno total last a thake -->
+select p_name,sum(price * quantity) as amount from order_details
+group by rollup(p_name)
+order by (amount)
+
+*using coalesce*
+PostgreSQL-এ COALESCE() ব্যবহার করা হয় NULL value-এর পরিবর্তে অন্য একটি value দেখানোর জন্য।
+
+select
+coalesce(p_name,'Total'),
+sum(price * quantity) as amount from order_details
+group by rollup(p_name)
+order by (amount)
+
+<!-- 
+COALESCE(p_name, 'Total') → p_name যদি NULL হয়, তাহলে Total দেখাবে।
+SUM(price * quantity) → প্রতিটি product-এর মোট amount হিসাব করবে।
+GROUP BY ROLLUP(p_name) → প্রতিটি product-এর total এবং সব product-এর Grand Total বের করবে।
+ORDER BY amount → amount অনুযায়ী ascending order-এ সাজাবে।
+ -->
+
+---
+
+**Stored Routine**
+Stored Routine হলো PostgreSQL-এর এমন একটি SQL code block বা function/procedure, যেটা Database-এর মধ্যে সংরক্ষণ করে রাখা যায় এবং প্রয়োজন অনুযায়ী বারবার execute করা যায়।
+
+সহজভাবে বললে, একই SQL logic বারবার না লিখে একবার Database-এ save করে রাখাই হলো Stored Routine-এর ধারণা।
+
+*PostgreSQL-এ মূলত দুই ধরনের Stored Routine রয়েছে:*
+1. Function
+2. Procedure
+
+1. Function
+Function হলো এমন একটি stored routine, যেটি execute করলে সাধারণত একটি value বা result return করে।
+
+2. Procedure
+Procedure হলো এমন একটি stored routine, যেটি মূলত কোনো কাজ বা operation সম্পাদন করার জন্য তৈরি করা হয়। এটি CALL দিয়ে execute করতে হয়।
+
+* create Procedure
+
+create or replace procedure update_emp_salary(
+p_emp_id int,
+p_new_salary numeric
+)
+language plpgsql
+as $$
+begin
+update employees
+set salary = p_new_salary
+where emp_id= p_emp_id;
+end;
+$$;
+
+
+* call Procedure
+<!-- ekta function a jevabe call kori parameter diye shevabei call kore -->
+call update_emp_salary(3,69000);
+
+
