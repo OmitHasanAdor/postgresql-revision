@@ -1,6 +1,13 @@
 to clear the terminal
-\! cls
-\list
+\! cls;
+*db list dekhte*
+\list;
+*List of tables dekhte*
+\dt;
+*database select kora*
+\c
+
+
 
 সহজভাবে মনে রাখবে:
 - Database: পুরো container বা data-এর মূল ভান্ডার।
@@ -765,3 +772,57 @@ FROM enrollment e
 JOIN students s ON s.s_id = e.s_id
 JOIN courses c ON c.c_id = e.c_id
 GROUP BY s.s_id, s.name;
+
+*task on join*
+<!-- tables -->
+CREATE TABLE customers (
+    cust_id SERIAL PRIMARY KEY,
+    cust_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE orders (
+    ord_id SERIAL PRIMARY KEY,
+    ord_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    cust_id INT NOT NULL,
+    FOREIGN KEY (cust_id) REFERENCES customers(cust_id)
+);
+
+CREATE TABLE products (
+    p_id SERIAL PRIMARY KEY,
+    p_name VARCHAR(100) NOT NULL,
+    price NUMERIC(10,2) NOT NULL
+);
+
+CREATE TABLE ord_items (
+    items_id SERIAL PRIMARY KEY,
+    ord_id INT NOT NULL,
+    p_id INT NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+
+    FOREIGN KEY (ord_id) REFERENCES orders(ord_id),
+    FOREIGN KEY (p_id) REFERENCES products(p_id)
+);
+
+*4ta table er shokol data ek shathe join korte*
+select * from ord_items oi
+join products p
+on p.p_id=oi.p_id
+join orders o
+on o.ord_id=oi.ord_id
+join customers c
+on c.cust_id=o.cust_id;
+
+*4ta table er specific data customize kore join korte , ekhane multiply operation o kora hoyeche*
+select c.cust_name,
+o.ord_date,
+p.p_name,
+p.price,
+oi.quantity,
+(p.price * oi.quantity)
+from ord_items oi
+join products p
+on p.p_id=oi.p_id
+join orders o
+on o.ord_id=oi.ord_id
+join customers c
+on c.cust_id=o.cust_id;
