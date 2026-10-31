@@ -1294,3 +1294,39 @@ select
 	(salary-lead(salary) over(order by salary desc)) as salary_diff
 	from employees;
 ```
+
+---
+
+
+**CTE (Common Table Expression)**
+*CTE হলো PostgreSQL-এর এমন একটি feature, যার মাধ্যমে একটি SQL query-এর result-কে সাময়িকভাবে একটি নাম দিয়ে সংরক্ষণ করে পরবর্তী query-তে ব্যবহার করা যায়।*
+*সহজভাবে বললে, বড় SQL query-কে ছোট ছোট অংশে ভাগ করে সহজে লেখা ও বোঝার জন্য CTE ব্যবহার করা হয়।*
+
+*task: erokom employee and tader salary lagbe jader salary dept dara group kora salary average er theke beshi hobe*
+
+```sql
+with over_avg_sal as (
+select  dept, avg(salary) as avg_sal from employees group by dept
+)
+
+select 
+	e.emp_id, e.fname,e.dept, e.salary, a.avg_sal
+from employees e
+	join over_avg_sal a on e.dept=a.dept
+	where e.salary > a.avg_sal;
+	
+```
+*task: erokom employee and tader salary lagbe jader salary dept dara group kora max salary  er shoman hobe ; mane jader salary e max salary hobe tader salary ber kora*
+
+```sql
+with max_sal as (
+select  dept, max(salary) as max_salary from employees group by dept
+)
+
+select 
+	e.emp_id, e.fname,e.dept, e.salary, m.max_salary
+from employees e
+	join max_sal m on e.dept=m.dept
+	where e.salary = m.max_salary;
+	
+```
