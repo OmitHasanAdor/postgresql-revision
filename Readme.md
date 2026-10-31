@@ -1,15 +1,21 @@
 to clear the terminal
+```sql
 \! cls;
+```
 *db list dekhte*
+```sql
 \list;
+```
 *List of tables dekhte*
+```sql
 \dt;
+```
 *database select kora*
+```sql
 \c
+```
 
-
-
-সহজভাবে মনে রাখবে:
+**সহজভাবে মনে রাখবে:**
 - Database: পুরো container বা data-এর মূল ভান্ডার।
 - Schema: Database-এর ভেতরে objects-গুলোকে organize করার logical namespace।
 - Table: যেখানে data rows এবং columns আকারে রাখা হয়।
@@ -18,8 +24,10 @@ Step 1: Database তৈরি করো
 ```sql
 CREATE DATABASE school_db;
 ```
-তারপর database-এ connect করো:
-* \c school_db
+*তারপর database-এ connect করো:*
+```sql
+\c school_db
+```
 **Step 2: Schema তৈরি করো**
 ```sql
 CREATE SCHEMA academic;
@@ -128,9 +136,9 @@ WHERE id=12
 
 ---
 
-search on browser: datatypes in postgresql
-Data Type নির্ধারণ করে একটি column-এ কী ধরনের data রাখা যাবে।
-
+**search on browser: datatypes in postgresql**
+*Data Type নির্ধারণ করে একটি column-এ কী ধরনের data রাখা যাবে।*
+```sql
 Data Type	            কী ধরনের data রাখে                                  	Example
 
 INT     	            পূর্ণসংখ্যা	                                                     25
@@ -142,8 +150,9 @@ TIMESTAMP	            তারিখ ও সময়	                            
 NUMERIC(10,2)	        নির্ভুল দশমিক সংখ্যা	                                    15000.50
 UUID	                Unique identifier          '550e8400-e29b-41d4-a716-446655440000'
 JSONB	                JSON data               	                '{"role":"developer"}'
+```
 
-Constraint হলো table-এর data-এর ওপর নির্দিষ্ট নিয়ম বা শর্ত, যা data সঠিক ও consistent রাখতে সাহায্য করে।
+*Constraint হলো table-এর data-এর ওপর নির্দিষ্ট নিয়ম বা শর্ত, যা data সঠিক ও consistent রাখতে সাহায্য করে।*
 
 ---
 
@@ -401,9 +410,10 @@ HAVING COUNT(*) > 2;
 ```
 ---
 
-****string functions****
+**string functions**
 
 *PostgreSQL-এর String Functions হলো এমন কিছু built-in function, যেগুলো দিয়ে text বা string-এর ওপর বিভিন্ন কাজ করা যায়। যেমন: বড় হাতের অক্ষর ছোট করা, text-এর দৈর্ঘ্য বের করা, দুটি string জোড়া লাগানো, text-এর অংশ বের করা ইত্যাদি।*
+
 ---
 
 **concat**
@@ -1083,8 +1093,83 @@ $$;
 
 * call Procedure
 <!-- ekta function er jevabe call kori parameter diye shevabei call kore -->
-
 ```sql
 CALL update_emp_salary(3, 69000);
 ```
 
+*another example*
+```sql
+create or replace procedure add_employee(
+    p_fname varchar,
+    p_email varchar,
+    p_dept varchar,
+    p_salary numeric
+)
+language plpgsql
+as $$
+begin
+insert into employees(fname,email,dept,salary)
+values(p_fname,p_email,p_dept,p_salary);
+end;
+$$;
+```
+*call procedure*
+CALL add_employee(
+    'Karim',
+    'karim@gmail.com',
+    'HR',
+    38000
+);
+
+**User Defined Function**
+*User Defined Function (UDF) হলো এমন একটি Function, যেটি Developer নিজের প্রয়োজন অনুযায়ী Database-এ তৈরি করে রাখতে পারে এবং প্রয়োজন অনুযায়ী বারবার ব্যবহার করতে পারে।*
+*PostgreSQL-এ built-in function যেমন SUM(), COUNT(), UPPER() রয়েছে। এগুলোর পাশাপাশি আমরা নিজেদের Function তৈরি করতে পারি।*
+
+*sub query use kore dept theke high salary and employee find*
+```sql
+select
+	e.emp_id,
+	e.fname,
+	e.salary 
+from employees e
+where e.dept ='HR'
+	and e.salary =(
+		select max(emp.salary)
+		from employees emp
+		where emp.dept='HR'
+);
+```
+
+**Syntax**
+
+```sql
+create or replace function dept_max_sal_emp1(dept_name varchar)
+returns table(emp_id int, fname varchar, salary numeric )
+as $$
+begin
+	return query 
+	select
+	e.emp_id,
+	e.fname,
+	e.salary 
+from employees e
+where e.dept =dept_name
+	and e.salary =(
+		select max(emp.salary)
+		from employees emp
+		where emp.dept=dept_name
+);
+end;
+$$ language plpgsql;
+```
+
+*data read kora*
+
+```sql
+SELECT * FROM dept_max_sal_emp1('HR');
+
+SELECT * FROM dept_max_sal_emp1('IT');
+
+SELECT * FROM dept_max_sal_emp1('Finance');
+```
+---
