@@ -1330,3 +1330,55 @@ from employees e
 	where e.salary = m.max_salary;
 	
 ```
+---
+
+
+**Triggers**
+*Trigger হলো PostgreSQL-এর এমন একটি mechanism, যার মাধ্যমে কোনো নির্দিষ্ট Table-এ INSERT, UPDATE বা DELETE operation ঘটলে স্বয়ংক্রিয়ভাবে নির্দিষ্ট Function execute হয়।*
+
+*সহজভাবে বললে, Table-এ কোনো নির্দিষ্ট কাজ হলেই Database নিজে থেকে অন্য একটি কাজ automatically করে দেয়।*
+
+*Step 1: Create Trigger Function*
+```sql
+CREATE OR REPLACE FUNCTION check_salary()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NEW.salary < 0 THEN
+        RAISE EXCEPTION 'Salary cannot be negative!';
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+```
+*Step 2: Create Trigger*
+```sql
+CREATE TRIGGER prevent_negative_salary
+BEFORE UPDATE OF salary
+ON employees
+FOR EACH ROW
+EXECUTE FUNCTION check_salary();
+
+```
+
+*table er jekono change a trigger korte of salary shorate pari*
+```sql
+CREATE TRIGGER prevent_negative_salary
+BEFORE UPDATE ON employees
+FOR EACH ROW
+EXECUTE FUNCTION check_salary();
+```
+
+*Step 3: Test করো*
+```sql
+CALL update_emp_salary(1, -5000);
+```
+*ERROR: Salary cannot be negative!*
+```sql
+CALL update_emp_salary(1, 50000);
+```
+*এটি successfully update হবে।*
+
+---
