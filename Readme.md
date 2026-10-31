@@ -1173,3 +1173,124 @@ SELECT * FROM dept_max_sal_emp1('IT');
 SELECT * FROM dept_max_sal_emp1('Finance');
 ```
 ---
+
+
+**Window Function**
+Window Function হলো PostgreSQL-এর এমন একটি Function, যেটি একাধিক row-এর ওপর calculation করে, কিন্তু প্রতিটি row-এর আলাদা identity বা তথ্য ধরে রাখে।
+
+সহজভাবে বললে, GROUP BY যেমন একাধিক row-কে group করে একটি result দেয়, Window Function তেমন করে row-গুলোকে একত্র করে ফেলে না। বরং প্রতিটি row-এর সঙ্গে calculated result দেখায়।
+
+*etate over clause o use kora hoy ekhane sum every employee er jonno same thakbe*
+```sql
+select fname,salary,dept,
+sum(salary) over()
+from employees;
+```
+
+*etate math er porishongkhan chapter er ojiv rekhar moto ektar por ekta salary jog hobe step by step ar dhire dhire jog hobe bidhay each employee er shomoy sheta unique hobe*
+*etake running sum o bole*
+```sql
+select fname,salary,dept,
+sum(salary) over(order by salary)
+from employees;
+```
+*moving average ba running sum er moto running average*
+```sql
+select fname,salary,dept,
+avg(salary) over(order by salary)
+from employees;
+```
+
+**Row_Number use kore korle**
+*প্রতিটি row-কে unique serial number দেয়*
+<!-- ekhane every row er jonno ekta number diye dibe -->
+```sql
+select 
+	row_number() over(),
+	fname,dept,salary
+	from employees;
+```
+
+<!-- row_number() over(order by fname) ekshathe use korle -->
+
+```sql
+select 
+	row_number() over(order by fname),
+	fname,dept,salary
+	from employees;
+```
+
+*partition by group by er moto kaj kore| ekhane eti dept diye partition kora hoise. to oi hishebe row gulo dept onujayi change hobe*
+
+```sql
+select 
+	row_number() over(partition by dept),
+	fname,dept,salary
+	from employees;
+```
+
+**Rank() use kore korle**
+*Ranking দেয়, tie হলে পরের rank skip করে*
+*ekahne salary onujayi ranking dekhabe ,jehetu 30000 3 joner same shehetu 3 joner e rank=1 hobe \ eta fix korte chaile dense_rank() use korte hobe, niche etar o example dichi*
+```sql
+select 
+	
+	fname,salary,
+	rank() over(order by salary)
+	from employees;
+```
+
+*boro theke choto korte chaile*
+
+```sql
+select 
+	
+	fname,salary,
+	rank() over(order by salary desc)
+	from employees;
+```
+
+**Dense_Rank() use korle**
+*Ranking দেয়, tie হলে rank skip করে না*
+```sql
+select 
+	fname,salary,
+	dense_rank() over(order by salary)
+	from employees;
+```
+
+**LAG()**
+*Previous row-এর value দেখায়*
+```sql
+select 
+	fname,salary,
+	lag(salary) over()
+	from employees;
+```
+
+**LEAD()**
+*Next row-এর value দেখায়*
+```sql
+select 
+	fname,salary,
+	lead(salary) over()
+	from employees;
+```
+
+**GROUP BY vs Window Function**
+```sql
+বিষয়	            GROUP BY	                              Window Function
+Rows	            Group করে                	            Original rows ধরে রাখে
+Result	            সাধারণত প্রতি group-এ একটি row	          প্রতিটি original row-তে result
+ব্যবহার	              Summary তৈরি	                           Ranking, comparison, analysis
+Syntax	             GROUP BY	                              OVER()
+```
+
+*real world example*
+HR Department দেখতে পারবে Salary ranking অনুযায়ী একজন Employee-এর চেয়ে পরের Employee কত টাকা কম salary পাচ্ছেন।
+```sql
+select 
+	fname,salary,
+	(salary-lead(salary) over(order by salary desc)) as salary_diff
+	from employees;
+```
