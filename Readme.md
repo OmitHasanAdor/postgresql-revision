@@ -136,21 +136,21 @@ WHERE id=12
 
 ---
 
-**search on browser: datatypes in postgresql**
-*Data Type নির্ধারণ করে একটি column-এ কী ধরনের data রাখা যাবে।*
-```sql
-Data Type	            কী ধরনের data রাখে                                  	Example
+## PostgreSQL Data Types
 
-INT     	            পূর্ণসংখ্যা	                                                     25
-VARCHAR(100)        	নির্দিষ্ট সীমার text	                                      'Hasan'
-TEXT	                Text,            নির্দিষ্ট ছোট দৈর্ঘ্যের সীমা নেই	'Frontend Developer'
-BOOLEAN	                True/False	                                                TRUE
-DATE	                তারিখ	                                             '2026-10-26'
-TIMESTAMP	            তারিখ ও সময়	                               '2026-10-26 10:30:00'
-NUMERIC(10,2)	        নির্ভুল দশমিক সংখ্যা	                                    15000.50
-UUID	                Unique identifier          '550e8400-e29b-41d4-a716-446655440000'
-JSONB	                JSON data               	                '{"role":"developer"}'
-```
+Data Type নির্ধারণ করে একটি column-এ কী ধরনের data রাখা যাবে।
+
+| Data Type | কী ধরনের Data রাখে | Example |
+|---|---|---|
+| `INT` | পূর্ণসংখ্যা | `25` |
+| `VARCHAR(100)` | সর্বোচ্চ ১০০ character-এর text | `'Hasan'` |
+| `TEXT` | Variable-length text, নির্দিষ্ট ছোট দৈর্ঘ্যের সীমা নেই | `'Frontend Developer'` |
+| `BOOLEAN` | True অথবা False | `TRUE` |
+| `DATE` | তারিখ | `'2026-10-26'` |
+| `TIMESTAMP` | তারিখ ও সময় | `'2026-10-26 10:30:00'` |
+| `NUMERIC(10,2)` | নির্ভুল দশমিক সংখ্যা | `15000.50` |
+| `UUID` | Unique identifier | `'550e8400-e29b-41d4-a716-446655440000'` |
+| `JSONB` | JSON data | `'{"role":"developer"}'` |
 
 *Constraint হলো table-এর data-এর ওপর নির্দিষ্ট নিয়ম বা শর্ত, যা data সঠিক ও consistent রাখতে সাহায্য করে।*
 
@@ -1277,15 +1277,16 @@ select
 	from employees;
 ```
 
-**GROUP BY vs Window Function**
-```sql
-বিষয়	            GROUP BY	                              Window Function
-Rows	            Group করে                	            Original rows ধরে রাখে
-Result	            সাধারণত প্রতি group-এ একটি row	          প্রতিটি original row-তে result
-ব্যবহার	              Summary তৈরি	                           Ranking, comparison, analysis
-Syntax	             GROUP BY	                              OVER()
-```
+## GROUP BY vs Window Function
 
+| বিষয় | GROUP BY | Window Function |
+|---|---|---|
+| Rows | Group করে | Original rows ধরে রাখে |
+| Result | সাধারণত প্রতি group-এ একটি row | প্রতিটি original row-তে result |
+| ব্যবহার | Summary তৈরি | Ranking, comparison, analysis |
+| Syntax | `GROUP BY` | `OVER()` |
+
+---
 *real world example*
 HR Department দেখতে পারবে Salary ranking অনুযায়ী একজন Employee-এর চেয়ে পরের Employee কত টাকা কম salary পাচ্ছেন।
 ```sql
