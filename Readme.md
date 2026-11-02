@@ -59,15 +59,16 @@ SELECT * FROM academic.students;
 SELECT * FROM finance.payments;
 ```
 
-**৪. psql-এ কীভাবে দেখবে?**
-```sql
-\l                 List all databases
-\c school_db       Connect to school_db
-\dn                List schemas
-\dt                List tables in current search path
-\dt academic.*     List tables in academic schema
-\d academic.students
-```
+## ৪. psql-এ কীভাবে দেখবে?
+
+| Command | কাজ |
+|---|---|
+| `\l` | সব Database-এর তালিকা দেখায় |
+| `\c school_db` | `school_db` Database-এ Connect করে |
+| `\dn` | সব Schema-এর তালিকা দেখায় |
+| `\dt` | Current search path-এর Tables দেখায় |
+| `\dt academic.*` | `academic` Schema-এর সব Table দেখায় |
+| `\d academic.students` | `academic` Schema-এর `students` Table-এর Structure দেখায় |
 
 *এই SQL query-এর কাজ হলো PostgreSQL সার্ভারে থাকা সব database-এর নাম দেখানো।*
 ```sql
