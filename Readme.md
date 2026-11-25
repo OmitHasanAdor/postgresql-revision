@@ -1384,3 +1384,58 @@ CALL update_emp_salary(1, 50000);
 *এটি successfully update হবে।*
 
 ---
+
+## 📚 Important PostgreSQL Documentation
+
+### 1. Getting Started
+- [PostgreSQL Official Tutorial](https://www.postgresql.org/docs/current/tutorial.html)
+- [Installation Guide](https://www.postgresql.org/docs/current/installation.html)
+- [SQL Introduction](https://www.postgresql.org/docs/current/tutorial-sql.html)
+
+### 2. SQL Fundamentals
+- [SQL Commands](https://www.postgresql.org/docs/current/sql-commands.html)
+- [CREATE TABLE](https://www.postgresql.org/docs/current/sql-createtable.html)
+- [INSERT](https://www.postgresql.org/docs/current/sql-insert.html)
+- [UPDATE](https://www.postgresql.org/docs/current/sql-update.html)
+- [DELETE](https://www.postgresql.org/docs/current/sql-delete.html)
+- [SELECT](https://www.postgresql.org/docs/current/sql-select.html)
+
+### 3. Data Types & Constraints
+- [Data Types](https://www.postgresql.org/docs/current/datatype.html)
+- [Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
+- [Identity Columns](https://www.postgresql.org/docs/current/ddl-identity-columns.html)
+- [Default Values](https://www.postgresql.org/docs/current/ddl-default.html)
+
+### 4. Relationships & Queries
+- [Joins](https://www.postgresql.org/docs/current/queries-table-expressions.html)
+- [Aggregate Functions](https://www.postgresql.org/docs/current/functions-aggregate.html)
+- [Window Functions](https://www.postgresql.org/docs/current/functions-window.html)
+- [WITH Queries (CTE)](https://www.postgresql.org/docs/current/queries-with.html)
+- [Subqueries](https://www.postgresql.org/docs/current/functions-subquery.html)
+
+### 5. Advanced SQL
+- [Views](https://www.postgresql.org/docs/current/sql-createview.html)
+- [Indexes](https://www.postgresql.org/docs/current/indexes.html)
+- [Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html)
+- [Triggers](https://www.postgresql.org/docs/current/triggers.html)
+- [PL/pgSQL](https://www.postgresql.org/docs/current/plpgsql.html)
+- [Functions](https://www.postgresql.org/docs/current/sql-createfunction.html)
+- [Procedures](https://www.postgresql.org/docs/current/sql-createprocedure.html)
+
+### 6. Performance & Optimization
+- [EXPLAIN](https://www.postgresql.org/docs/current/using-explain.html)
+- [Performance Tips](https://www.postgresql.org/docs/current/performance-tips.html)
+- [Index Types](https://www.postgresql.org/docs/current/indexes-types.html)
+- [Query Planning](https://www.postgresql.org/docs/current/planner-optimizer.html)
+
+### 7. Database Management
+- [Database Creation](https://www.postgresql.org/docs/current/sql-createdatabase.html)
+- [Schemas](https://www.postgresql.org/docs/current/ddl-schemas.html)
+- [Roles & Permissions](https://www.postgresql.org/docs/current/user-manag.html)
+- [Backup & Restore](https://www.postgresql.org/docs/current/backup.html)
+- [psql Documentation](https://www.postgresql.org/docs/current/app-psql.html)
+
+### 8. PostgreSQL with Applications
+- [PostgreSQL Client Interfaces](https://www.postgresql.org/docs/current/client-interfaces.html)
+- [Connection Strings](https://www.postgresql.org/docs/current/libpq-connect.html)
+- [JSON & JSONB](https://www.postgresql.org/docs/current/datatype-json.html)
